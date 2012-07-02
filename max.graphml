@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+    <key id="name" for="node" attr.name="name" attr.type="string"></key>
+    <key id="type" for="node" attr.name="type" attr.type="string"></key>
+    <key id="description" for="edge" attr.name="description" attr.type="string"></key>
+    <key id="duration" for="edge" attr.name="duration" attr.type="int"></key>
+    <key id="degree" for="edge" attr.name="degree" attr.type="string"></key>
+    <key id="condition" for="edge" attr.name="condition" attr.type="string"></key>
+    <graph id="G" edgedefault="directed">
+        <node id="Max">
+            <data key="name">Max</data>
+            <data key="type">User</data>
+        </node>
+        <node id="ThoughtWorks">
+            <data key="name">ThoughtWorks</data>
+            <data key="type">Employer</data>
+        </node>
+        <node id="TWCU">
+            <data key="name">TW Credit Union</data>
+            <data key="type">CU</data>
+        </node>
+        <edge id="Max_TW" source="Max" target="ThoughtWorks">
+            <data key="description">works at</data>
+            <data key="duration">366</data>
+        </edge>
+        <edge source="ThoughtWorks" target="TWCU">
+            <data key="description">which qualifies for</data>
+            <data key="condition">l.duration > 365</data>
+        </edge>
+    </graph>
+</graphml>

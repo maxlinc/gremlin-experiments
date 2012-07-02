@@ -15,8 +15,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.codehaus.gmaven</groupId>
-            <artifactId>gmaven</artifactId>
+            <groupId>org.codehaus.gmaven.runtime</groupId>
+            <artifactId>gmaven-runtime-1.8</artifactId>
             <version>1.4</version>
             <scope>test</scope>
         </dependency>
