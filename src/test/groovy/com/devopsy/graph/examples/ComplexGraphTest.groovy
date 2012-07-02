@@ -11,20 +11,20 @@ class ComplexGraphTest extends GroovyTestCase {
     }
 
     Graph g
-    InferenceGraph ig
+    EligibilityGraph eg
 
     @Before
     void setUp() {
         g = new TinkerGraph()
         g.loadGraphML('moremax.graphml')
-        ig = new InferenceGraph(g)
+        eg = new EligibilityGraph(g)
     }
 
     void testMax() {
         g.e('Max_TW').duration = 366
-        def results = ig.solve('Max')
-        def paths = ig.getDisplayPaths()
-        def creditUnions = ig.getEligibleCUs()
+        def results = eg.solve('Max')
+        def paths = eg.getDisplayPaths()
+        def creditUnions = eg.getEligibleCUs()
         assertTrue(paths.contains('Max works at ThoughtWorks which qualifies for TW Credit Union'))
         assertTrue(paths.contains('Max lives at NYC which qualifies for Big Apple Credit Union'))
         assertTrue(paths.contains('Max studied at Drexel which qualifies for ACME Credit Union'))
@@ -35,9 +35,9 @@ class ComplexGraphTest extends GroovyTestCase {
 
     void testMaxWrongDegree() {
         g.e('Max_Drexel').degree = 'BSCS'
-        def results = ig.solve('Max')
-        def paths = ig.getDisplayPaths()
-        def creditUnions = ig.getEligibleCUs()
+        def results = eg.solve('Max')
+        def paths = eg.getDisplayPaths()
+        def creditUnions = eg.getEligibleCUs()
         assertTrue(paths.contains('Max works at ThoughtWorks which qualifies for TW Credit Union'))
         assertTrue(paths.contains('Max lives at NYC which qualifies for Big Apple Credit Union'))
         assertTrue(paths.contains('Max lives in Manhattan which qualifies for Big Apple Credit Union'))
@@ -48,9 +48,9 @@ class ComplexGraphTest extends GroovyTestCase {
     void testMaxAllWrong(){
         g.e('Max_Drexel').degree = 'BSCS'
         g.e('Max_TW').duration = 1
-        def results = ig.solve('Max')
-        def paths = ig.getDisplayPaths()
-        def creditUnions = ig.getEligibleCUs()
+        def results = eg.solve('Max')
+        def paths = eg.getDisplayPaths()
+        def creditUnions = eg.getEligibleCUs()
         assertTrue(paths.contains('Max lives at NYC which qualifies for Big Apple Credit Union'))
         assertTrue(paths.contains('Max lives in Manhattan which qualifies for Big Apple Credit Union'))
         assertEquals(2, results.size)
@@ -58,9 +58,9 @@ class ComplexGraphTest extends GroovyTestCase {
     }
 
     void testEvan() {
-        def results = ig.solve('Evan')
-        def paths = ig.getDisplayPaths()
-        def creditUnions = ig.getEligibleCUs()
+        def results = eg.solve('Evan')
+        def paths = eg.getDisplayPaths()
+        def creditUnions = eg.getEligibleCUs()
         assertTrue(paths.contains('Evan plays in Flabberghaster which qualifies for Rocking Credit Union'))
         assertEquals(1, results.size)
         assertEquals(creditUnions, ['Rocking Credit Union'])

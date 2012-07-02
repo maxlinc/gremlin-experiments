@@ -11,43 +11,38 @@ class MaxGraphTest extends GroovyTestCase {
     }
 
     Graph g
-    InferenceGraph ig
+    EligibilityGraph eg
 
     @Before
     void setUp() {
         g = new TinkerGraph()
         g.loadGraphML('max.graphml')
-        ig = new InferenceGraph(g)
-    }
-
-    def dumbSolve(Object id) {
-        def results = g.v(id).outE.filter{it.duration > 365}.inV.outE.inV.paths {it.name} {it.description}
-        results.toList()
+        eg = new EligibilityGraph(g)
     }
 
     void testKnownTraversalLessThanYear() {
         g.e('Max_TW').duration = 364
-        def results = dumbSolve('Max')
+        def results = eg.dumbSolve('Max')
         assertEquals(0, results.size)
     }
 
     void testKnownTraversalMoreThanYear() {
-        def results = dumbSolve('Max')
+        def results = eg.dumbSolve('Max')
         assertEquals(1, results.size)
-        assertEquals('Max works at ThoughtWorks which qualifies for TW Credit Union', results[0].join(' '))
+        assertEquals(eg.getDisplayPaths(), ['Max works at ThoughtWorks which qualifies for TW Credit Union'])
     }
 
     void testMaxLessThanYear() {
         g.e('Max_TW').duration = 364
-        def results = ig.solve('Max')
+        def results = eg.solve('Max')
         assertEquals(0, results.size)
     }
 
     void testMaxMoreThanYear() {
-        def results = ig.solve('Max')
+        def results = eg.solve('Max')
         assertEquals(1, results.size)
-        def paths = ig.getDisplayPaths()
-        def creditUnions = ig.getEligibleCUs()
+        def paths = eg.getDisplayPaths()
+        def creditUnions = eg.getEligibleCUs()
         assertTrue(paths.contains('Max works at ThoughtWorks which qualifies for TW Credit Union'))
         assertEquals(creditUnions, ['TW Credit Union'])
     }
